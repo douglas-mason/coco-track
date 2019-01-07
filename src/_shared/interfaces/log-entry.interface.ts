@@ -1,5 +1,6 @@
 export interface LogEntry {
-  id: string;
+  id?: string;
+  description: string;
   value: number;
   notes: string;
   categoryId: number;
