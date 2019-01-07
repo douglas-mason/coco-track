@@ -1,21 +1,29 @@
 import * as React from 'react';
 import { Form, Input, Row, Col, Button } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { createLogEntry } from '../../_shared/services/log-entry.service';
 import { Categories } from '../../_shared/contants/categories.enum';
 import { SubCategories } from '../../_shared/contants/sub-categories.enum';
-import { User } from '../../_shared/interfaces/user.interface';
+import {
+  AuthenticationContext,
+  IAuthenticationContext,
+} from '../../_shared/contexts/authentication/authentication.context';
+import { withAuthenticationContext } from '../../_shared/contexts/authentication/with-authentication-context.component';
+import { LogEntry } from '../../_shared/interfaces/log-entry.interface';
+import { createLogEntry } from '../../_shared/services/log-entry.service';
 
 const FormItem = Form.Item;
 
 interface LogEntryFormProps extends FormComponentProps {
-  currentUser: User;
+  authContext: IAuthenticationContext;
 }
 
-class LogEntryForm extends React.Component<LogEntryFormProps> {
+class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
   handleOnSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const { currentUser, form } = this.props;
+    const {
+      authContext: { currentUser },
+      form,
+    } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -28,7 +36,7 @@ class LogEntryForm extends React.Component<LogEntryFormProps> {
         value: values['logValue'],
         categoryId: values['category'], //Categories.BillableTime,
         subCategoryId: values['subcategory'], //SubCategories.Admin,
-        updatedBy: currentUser.id,
+        updatedBy: currentUser ? currentUser.id : '',
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -40,29 +48,35 @@ class LogEntryForm extends React.Component<LogEntryFormProps> {
       form: { getFieldDecorator },
     } = this.props;
     return (
-      <Form hideRequiredMark layout="inline" onSubmit={this.handleOnSubmit}>
-        <Row>
-          <Col>
-            <FormItem label="Description">
-              {getFieldDecorator('description', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please enter a description',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Row>
-      </Form>
+      <AuthenticationContext.Consumer>
+        {() => (
+          <Form hideRequiredMark layout="inline" onSubmit={this.handleOnSubmit}>
+            <Row>
+              <Col>
+                <FormItem label="Description">
+                  {getFieldDecorator('description', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Please enter a description',
+                      },
+                    ],
+                  })(<Input />)}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Row>
+          </Form>
+        )}
+      </AuthenticationContext.Consumer>
     );
   }
 }
 
-export const WrappedLogEntryForm = Form.create()(LogEntryForm);
+export const LogEntryForm = withAuthenticationContext(
+  Form.create()(LogEntryFormComponent)
+);
