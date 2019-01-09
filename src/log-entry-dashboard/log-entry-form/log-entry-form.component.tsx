@@ -1,5 +1,15 @@
 import * as React from 'react';
-import { Form, Input, Row, Col, Button } from 'antd';
+import {
+  Form,
+  Input,
+  InputNumber,
+  Menu,
+  Select,
+  DatePicker,
+  Row,
+  Col,
+  Button,
+} from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { Categories } from '../../_shared/contants/categories.enum';
 import { SubCategories } from '../../_shared/contants/sub-categories.enum';
@@ -10,6 +20,8 @@ import {
 import { withAuthenticationContext } from '../../_shared/contexts/authentication/with-authentication-context.component';
 import { LogEntry } from '../../_shared/interfaces/log-entry.interface';
 import { createLogEntry } from '../../_shared/services/log-entry.service';
+import { inputClass } from './log-entry-form.styles';
+import { panelClass } from '../log-entry-dashboard.styles';
 
 const FormItem = Form.Item;
 
@@ -30,7 +42,8 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
       }
 
       createLogEntry({
-        description: values['description'],
+        title: values['description'],
+        arePointsCompleted: values['completedPoints'],
         notes: values['notes'],
         date: values['logDate'],
         value: values['logValue'],
@@ -47,23 +60,77 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
     const {
       form: { getFieldDecorator },
     } = this.props;
+
     return (
       <AuthenticationContext.Consumer>
         {() => (
           <Form hideRequiredMark layout="inline" onSubmit={this.handleOnSubmit}>
             <Row>
-              <Col>
-                <FormItem label="Description">
-                  {getFieldDecorator('description', {
+              <Col span={24} className={panelClass}>
+                <FormItem className={inputClass}>
+                  {getFieldDecorator('projectTitle', {
                     rules: [
                       {
                         required: true,
                         message: 'Please enter a description',
                       },
                     ],
-                  })(<Input />)}
+                  })(
+                    <Input placeholder="project title" className={inputClass} />
+                  )}
                 </FormItem>
               </Col>
+            </Row>
+            <Row>
+              <FormItem className={panelClass}>
+                {getFieldDecorator('hoursRecorded', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please enter a date',
+                    },
+                  ],
+                })(<InputNumber placeholder="hours" />)}
+              </FormItem>
+              <FormItem className={panelClass}>
+                {getFieldDecorator('hoursRecorded', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please enter a date',
+                    },
+                  ],
+                })(
+                  <Select defaultValue="Zhejiang">
+                    <Select.Option value="Zhejiang">Zhejiang</Select.Option>
+                    <Select.Option value="Jiangsu">Jiangsu</Select.Option>
+                  </Select>
+                )}
+              </FormItem>
+            </Row>
+            <Row>
+              <FormItem className={panelClass}>
+                {getFieldDecorator('datePicker', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please enter a date',
+                    },
+                  ],
+                })(<DatePicker placeholder="select date" />)}
+              </FormItem>
+            </Row>
+            <Row>
+              <FormItem className={panelClass}>
+                {getFieldDecorator('projectDescription', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please enter a date',
+                    },
+                  ],
+                })(<Input placeholder="project description" />)}
+              </FormItem>
             </Row>
             <Row>
               <Button type="primary" htmlType="submit">

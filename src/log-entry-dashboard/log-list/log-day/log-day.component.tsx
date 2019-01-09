@@ -1,7 +1,22 @@
 import * as React from 'react';
+import { LogEntry } from '../../../_shared/interfaces/log-entry.interface';
+import { LogDayItem } from './log-day-item/log-day-item.container';
 
-export class LogDay extends React.Component {
+interface LogDayProps {
+  logEntries: LogEntry[];
+}
+
+export class LogDay extends React.Component<LogDayProps> {
+  renderLogDayItems = () => {
+    const { logEntries } = this.props;
+    return logEntries.map(logEntry => <LogDayItem logEntry={logEntry} />);
+  };
+
   render() {
-    return <div>test</div>;
+    return (
+      <div>
+        <ul>{this.renderLogDayItems()}</ul>
+      </div>
+    );
   }
 }
