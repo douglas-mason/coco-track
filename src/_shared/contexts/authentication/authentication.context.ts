@@ -11,4 +11,6 @@ const defaultContext: IAuthenticationContext = {
   setCurrentUser: (currentUser?: User) => {},
 };
 
-export const AuthenticationContext = React.createContext(defaultContext);
+export const AuthenticationContext = React.createContext<
+  IAuthenticationContext
+>(defaultContext);
