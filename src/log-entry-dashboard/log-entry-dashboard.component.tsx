@@ -8,7 +8,7 @@ export class LogEntryDashboard extends React.Component {
   render() {
     return (
       <Row>
-        <Col span={8} className={panelClass}>
+        <Col span={8}>
           <LogEntryForm />
         </Col>
         <Col span={16} className={panelClass}>
