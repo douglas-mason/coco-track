@@ -18,7 +18,7 @@ export const getLogEntries = (
     updatedAt: new Date(),
     updatedBy: '1',
   };
-  return [logEntryData];
+  return [logEntryData, logEntryData, logEntryData, logEntryData];
 };
 
 export const createLogEntry = (logEntry: LogEntry) => {

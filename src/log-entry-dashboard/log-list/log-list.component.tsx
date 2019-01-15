@@ -32,7 +32,10 @@ class LogListComponent extends React.Component<LogListProps, LogListState> {
 
     return (
       <div>
-        <LogDay logEntries={logs} />
+        <div>Calendar Controls</div>
+        <div>
+          <LogDay logEntries={logs} />
+        </div>
       </div>
     );
   }
