@@ -20,7 +20,7 @@ import {
 import { withAuthenticationContext } from '../../_shared/contexts/authentication/with-authentication-context.component';
 import { LogEntry } from '../../_shared/interfaces/log-entry.interface';
 import { createLogEntry } from '../../_shared/services/log-entry.service';
-import { timeForm, buttonContainer } from './log-entry-form.styles';
+import { timeFormClass, buttonContainerClass, pointsButtonContainerClass } from './log-entry-form.styles';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import { any } from 'prop-types';
 
@@ -35,31 +35,6 @@ interface LogEntryFormProps extends FormComponentProps {
 }
 
 class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
-  state = {
-    categoryId: 0,
-    pointsCompeleted: 'notCompleted',
-  };
-
-  handleHourChange = (e?: number) => {
-    const {
-      form: { setFieldsValue },
-    } = this.props;
-
-    setFieldsValue({ logValue: 0 });
-  };
-
-  handleCategoryChange = (e: string) => {
-    this.setState({ categoryId: e });
-  };
-
-  handleRaidoChange = (e: RadioChangeEvent) => {
-    if (e.target.value === 'completed') {
-      this.setState({ pointsCompeleted: 'completed' });
-    } else if (e.target.value === 'notCompleted') {
-      this.setState({ pointsCompeleted: 'notCompleted' });
-    }
-  };
-
   hasErrors = (fieldsError: any) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   };
@@ -89,7 +64,7 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
         updatedAt: new Date(),
       });
 
-      form.resetFields();
+      this.handleClearForm();
     });
   };
 
@@ -128,10 +103,10 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
 
   renderPointsInput = () => {
     const {
-      form: { getFieldDecorator },
+      form: { getFieldDecorator, getFieldValue },
     } = this.props;
 
-    if (this.state.pointsCompeleted === 'completed') {
+    if (getFieldValue('completedPoints') === true) {
       return (
         <Col span={8}>
           <FormItem>
@@ -152,8 +127,8 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
   };
 
   renderSecondaryOptions = () => {
-    const { getFieldDecorator } = this.props.form;
-    if (this.state.categoryId === 2) {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    if (getFieldValue('category') === Categories.UnbillableTime) {
       return (
         <Row>
           <Col span={24}>
@@ -174,10 +149,10 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
           </Col>
         </Row>
       );
-    } else if (this.state.categoryId === 1 || this.state.categoryId === 3) {
+    } else if (getFieldValue('category') === Categories.TimeOnPoints || getFieldValue('category') === Categories.BillableTime || getFieldValue('category') === Categories.Points) {
       return (
         <Row>
-          <Col span={16}>
+          <Col span={16} className={pointsButtonContainerClass}>
             <FormItem>
               {getFieldDecorator('completedPoints', {
                 initialValue: '0',
@@ -188,11 +163,11 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
                   },
                 ],
               })(
-                <RadioGroup onChange={this.handleRaidoChange}>
-                  <RadioButton value="completed" name="complete">
+                <RadioGroup>
+                  <RadioButton value={true} name="complete">
                     complete
                   </RadioButton>
-                  <RadioButton value="notCompleted" name="notComplete">
+                  <RadioButton value={false} name="notComplete">
                     not complete
                   </RadioButton>
                 </RadioGroup>
@@ -207,13 +182,13 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
 
   render() {
     const {
-      form: { getFieldDecorator, getFieldsError },
+      form: { getFieldDecorator, getFieldsError, setFieldsValue },
     } = this.props;
 
     return (
       <AuthenticationContext.Consumer>
         {() => (
-          <section className={timeForm}>
+          <section className={timeFormClass}>
             <Form onSubmit={this.handleOnSubmit}>
               <Row gutter={8}>
                 <Col span={24}>
@@ -243,7 +218,6 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
                     })(
                       <InputNumber
                         placeholder="hours worked"
-                        onChange={this.handleHourChange}
                       />
                     )}
                   </FormItem>
@@ -259,7 +233,7 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
                       ],
                     })(
                       <Select
-                        onChange={this.handleCategoryChange}
+                        // onChange={this.handleCategoryChange}
                         placeholder="time category"
                       >
                         {this.renderCategoriesSelectOptions()}
@@ -300,7 +274,7 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
                 </Col>
               </Row>
               <Row>
-                <div className={buttonContainer}>
+                <div className={buttonContainerClass}>
                   <Col sm={12} md={16} lg={18}>
                     <Button type="ghost" onClick={this.handleClearForm}>
                       clear

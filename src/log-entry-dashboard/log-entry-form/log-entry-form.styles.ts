@@ -1,7 +1,7 @@
 import { css } from 'emotion';
 import { COLORS } from '../../_shared/contants/colors.constant';
 
-export const timeForm = css({
+export const timeFormClass = css({
   maxWidth: 650,
 
   '.ant-form': {
@@ -63,7 +63,11 @@ export const timeForm = css({
   },
 });
 
-export const buttonContainer = css({
+export const pointsButtonContainerClass = css({
+  textAlign: 'left'
+})
+
+export const buttonContainerClass = css({
   marginTop: 12,
   textAlign: 'right',
 });
