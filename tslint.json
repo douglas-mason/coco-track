@@ -1,5 +1,10 @@
 {
   "rules": {
-    "max-line-length": { "options": { "limit": 100 } }
+    "no-unused-variable": [true],
+    "no-console": [true],
+    "max-line-length": [
+      true,
+      { "limit": 80, "ignore-pattern": "^import |^export {(.*?)}" }
+    ]
   }
 }

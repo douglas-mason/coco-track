@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
-  "prettier.eslintIntegration": true,
   "prettier.trailingComma": "es5",
   "prettier.singleQuote": true,
-  "eslint.enable": true
+  "tslint.enable": true,
+  "prettier.tslintIntegration": true
 }
