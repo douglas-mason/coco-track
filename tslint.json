@@ -2,6 +2,7 @@
   "rules": {
     "no-unused-variable": [true],
     "no-console": [true],
+    "no-any": [true],
     "max-line-length": [
       true,
       { "limit": 80, "ignore-pattern": "^import |^export {(.*?)}" }
