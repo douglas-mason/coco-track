@@ -1,3 +1,4 @@
 export const COLORS = {
-  gray_border: '#ddd',
+  gray: '#ddd',
+  blue: '#40a9ff',
 };
