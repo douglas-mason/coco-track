@@ -11,7 +11,7 @@ export class LogEntryDashboard extends React.Component {
         <Col span={8}>
           <LogEntryForm />
         </Col>
-        <Col span={16} className={panelClass}>
+        <Col span={10} offset={2}>
           <LogList />
         </Col>
       </Row>

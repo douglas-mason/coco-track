@@ -1,7 +1,12 @@
 import * as React from 'react';
+import { css } from 'emotion';
+import moment from 'moment';
 import { AuthenticationContext } from '../../_shared/contexts/authentication/authentication.context';
 import { LogDay } from './log-day/log-day.container';
 import { LogEntry } from '../../_shared/interfaces/log-entry.interface';
+import { listContainerClass } from './log-list.styles';
+import { panelClass } from '../log-entry-dashboard.styles';
+import { WeekPicker } from '../../_shared/components/week-picker/week-picker.component';
 
 interface LogListProps {
   loadLogEntries: (
@@ -12,11 +17,13 @@ interface LogListProps {
 }
 interface LogListState {
   logs?: LogEntry[];
+  selectedWeek: moment.Moment;
 }
 
 class LogListComponent extends React.Component<LogListProps, LogListState> {
   state = {
     logs: [],
+    selectedWeek: moment().week(moment().week()),
   };
   static contextType = AuthenticationContext;
   context!: React.ContextType<typeof AuthenticationContext>;
@@ -26,12 +33,30 @@ class LogListComponent extends React.Component<LogListProps, LogListState> {
     this.setState({ logs });
   }
 
+  loadNextWeek = () => {
+    const { selectedWeek } = this.state;
+    this.setState({
+      selectedWeek: selectedWeek.add(1, 'week'),
+    });
+  };
+  loadPrevWeek = () => {
+    const { selectedWeek } = this.state;
+    this.setState({
+      selectedWeek: selectedWeek.subtract(1, 'week'),
+    });
+  };
+
   render() {
     const { currentUser } = this.context;
-    const { logs = [] } = this.state;
+    const { logs, selectedWeek } = this.state;
 
     return (
-      <div>
+      <div className={css([panelClass, listContainerClass])}>
+        <WeekPicker
+          selectedWeek={selectedWeek}
+          onPrevClick={this.loadPrevWeek}
+          onNextClick={this.loadNextWeek}
+        />
         <div>Calendar Controls</div>
         <div>
           <LogDay logEntries={logs} />
