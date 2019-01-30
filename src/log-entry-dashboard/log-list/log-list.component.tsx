@@ -7,6 +7,18 @@ import { LogEntry } from '../../_shared/interfaces/log-entry.interface';
 import { listContainerClass } from './log-list.styles';
 import { panelClass } from '../log-entry-dashboard.styles';
 import { WeekPicker } from '../../_shared/components/week-picker/week-picker.component';
+import { Collapse } from 'antd';
+
+const { Panel } = Collapse;
+const WEEK_DAYS = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
 
 interface LogListProps {
   loadLogEntries: (
@@ -40,17 +52,25 @@ class LogListComponent extends React.Component<LogListProps, LogListState> {
     });
   };
 
+  renderWeekDays = () => {
+    const { logs } = this.state;
+    const dayPanels = WEEK_DAYS.map(day => (
+      <Panel key={day} header={day}>
+        <LogDay logEntries={logs} />
+      </Panel>
+    ));
+    return dayPanels;
+  };
+
   render() {
     const { currentUser } = this.context;
-    const { logs, selectedWeek } = this.state;
+    const { selectedWeek } = this.state;
 
     return (
       <div className={css([panelClass, listContainerClass])}>
         <WeekPicker selectedWeek={selectedWeek} onWeekChange={this.loadWeek} />
         <div>Calendar Controls</div>
-        <div>
-          <LogDay logEntries={logs} />
-        </div>
+        <Collapse bordered={false}>{this.renderWeekDays()}</Collapse>
       </div>
     );
   }
