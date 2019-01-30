@@ -33,16 +33,10 @@ class LogListComponent extends React.Component<LogListProps, LogListState> {
     this.setState({ logs });
   }
 
-  loadNextWeek = () => {
+  loadWeek = (date: moment.Moment) => {
     const { selectedWeek } = this.state;
     this.setState({
-      selectedWeek: selectedWeek.add(1, 'week'),
-    });
-  };
-  loadPrevWeek = () => {
-    const { selectedWeek } = this.state;
-    this.setState({
-      selectedWeek: selectedWeek.subtract(1, 'week'),
+      selectedWeek: date,
     });
   };
 
@@ -52,11 +46,7 @@ class LogListComponent extends React.Component<LogListProps, LogListState> {
 
     return (
       <div className={css([panelClass, listContainerClass])}>
-        <WeekPicker
-          selectedWeek={selectedWeek}
-          onPrevClick={this.loadPrevWeek}
-          onNextClick={this.loadNextWeek}
-        />
+        <WeekPicker selectedWeek={selectedWeek} onWeekChange={this.loadWeek} />
         <div>Calendar Controls</div>
         <div>
           <LogDay logEntries={logs} />
