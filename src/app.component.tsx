@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { LogEntryDashboard } from './log-entry-dashboard/log-entry-dashboard.container';
 import './app.styles.css';
 import { User } from './_shared/interfaces/user.interface';
 import {
   AuthenticationContext,
   IAuthenticationContext,
 } from './_shared/contexts/authentication/authentication.context';
-import { AsideMenu } from './_shared/components/navigation/aside-menu.component';
+import { AppRouter } from './_shared/components/navigation/app-router.component';
 
 interface AppState {
   currentUser?: User;
@@ -44,9 +43,7 @@ class App extends Component<{}, AppState> {
     return (
       <div className="App">
         <AuthenticationContext.Provider value={initialContext}>
-          <AsideMenu>
-            <LogEntryDashboard />
-          </AsideMenu>
+          <AppRouter />
         </AuthenticationContext.Provider>
       </div>
     );
