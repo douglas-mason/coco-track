@@ -6,6 +6,7 @@ import {
   AuthenticationContext,
   IAuthenticationContext,
 } from './_shared/contexts/authentication/authentication.context';
+import { AsideMenu } from './_shared/components/navigation/aside-menu.component';
 
 interface AppState {
   currentUser?: User;
@@ -43,7 +44,9 @@ class App extends Component<{}, AppState> {
     return (
       <div className="App">
         <AuthenticationContext.Provider value={initialContext}>
-          <LogEntryDashboard />
+          <AsideMenu>
+            <LogEntryDashboard />
+          </AsideMenu>
         </AuthenticationContext.Provider>
       </div>
     );
