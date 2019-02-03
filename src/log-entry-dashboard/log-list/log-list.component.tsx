@@ -46,7 +46,6 @@ class LogListComponent extends React.Component<LogListProps, LogListState> {
   }
 
   loadWeek = (date: moment.Moment) => {
-    const { selectedWeek } = this.state;
     this.setState({
       selectedWeek: date,
     });
