@@ -35,6 +35,9 @@ interface LogEntryFormProps extends FormComponentProps {
 }
 
 class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
+  state = {
+    create: true
+  }
   hasErrors = (fieldsError: any) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   };
@@ -71,6 +74,10 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
   handleClearForm = () => {
     const { form } = this.props;
     form.resetFields();
+  };
+
+  renderFormTitle = () => {
+    return this.state.create ? <h1>Create record</h1> : <h1>Edit record</h1>;
   };
 
   renderCategoriesSelectOptions = () => {
@@ -189,6 +196,7 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
       <AuthenticationContext.Consumer>
         {() => (
           <section className={timeFormClass}>
+            {this.renderFormTitle()}
             <Form onSubmit={this.handleOnSubmit}>
               <Row gutter={8}>
                 <Col span={24}>
@@ -269,18 +277,18 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
                           message: 'Please enter project notes',
                         },
                       ],
-                    })(<TextArea placeholder="project notes" autosize />)}
+                    })(<TextArea placeholder="project notes" />)}
                   </FormItem>
                 </Col>
               </Row>
               <Row>
                 <div className={buttonContainerClass}>
-                  <Col sm={12} md={16} lg={18}>
+                  <Col sm={12} md={16} lg={19}>
                     <Button type="ghost" onClick={this.handleClearForm}>
                       clear
                     </Button>
                   </Col>
-                  <Col sm={12} md={8} lg={6}>
+                  <Col sm={12} md={8} lg={5}>
                     <Button
                       type="primary"
                       htmlType="submit"

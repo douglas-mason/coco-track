@@ -1,5 +1,13 @@
 import { css } from 'emotion';
 
 export const infoContainerClass = css({
-  display: 'flex',
+  fontFamily: 'Montserrat, sans-serif',
+  fontSize: '.85em',
+  'div': {
+    padding: '0 .25em'
+  },
+  'div:last-child': {
+    textAlign: 'right',
+  }
+
 });

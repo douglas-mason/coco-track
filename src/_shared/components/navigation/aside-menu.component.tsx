@@ -2,44 +2,7 @@ import * as React from 'react';
 import Sider from 'antd/lib/layout/Sider';
 import { Layout, Menu, Icon } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-
-interface MenuItem {
-  title: string;
-  icon: string;
-  pathName?: string;
-  subMenuItems?: MenuItem[];
-}
-
-const MENU_ITEMS: MenuItem[] = [
-  {
-    title: 'Log Entry',
-    icon: 'form',
-    pathName: 'log-entry',
-  },
-  {
-    title: 'Analytics',
-    icon: 'bar-chart',
-    pathName: 'analytics',
-  },
-  {
-    title: 'Profile',
-    icon: 'user',
-    subMenuItems: [
-      {
-        title: 'Settings',
-        icon: 'setting',
-        pathName: 'settings',
-      },
-      {
-        title: 'Logout',
-        icon: 'logout',
-      },
-    ],
-  },
-];
-
-interface AsideMenuProps extends RouteComponentProps {}
+import { layoutContainerClass } from './aside-menu.styles'
 
 interface AsideMenuState {
   collapsed: boolean;
@@ -48,9 +11,9 @@ interface AsideMenuState {
 class AsideMenuComponent extends React.Component<
   AsideMenuProps,
   AsideMenuState
-> {
+  > {
   state = {
-    collapsed: false,
+    collapsed: true,
   };
   onCollapse = (collapsed: boolean) => {
     this.setState({ collapsed });
@@ -126,7 +89,7 @@ class AsideMenuComponent extends React.Component<
             {this.renderMenuItems()}
           </Menu>
         </Sider>
-        <Layout>{this.props.children}</Layout>
+        <Layout className={layoutContainerClass}>{this.props.children}</Layout>
       </Layout>
     );
   }

@@ -1,3 +1,8 @@
 import { css } from 'emotion';
+import { COLORS } from '../../../_shared/contants/colors.constant';
 
-export const asideContainerClass = css({});
+export const layoutContainerClass = css({
+  '&.ant-layout': {
+    backgroundColor: COLORS.lightGray
+  }
+});

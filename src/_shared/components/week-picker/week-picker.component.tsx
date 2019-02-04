@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, Icon, DatePicker } from 'antd';
+import { DatePicker } from 'antd';
 import moment from 'moment';
+import { weekPickerContainerClass } from './week-picker.styles';
 
 const { WeekPicker: WeekPickerComponent } = DatePicker;
 
-const noop = () => {};
+const noop = () => { };
 
 interface WeekPickerProps {
   selectedWeek: moment.Moment;
@@ -14,7 +15,7 @@ interface WeekPickerProps {
 export const WeekPicker = (props: WeekPickerProps) => {
   const { selectedWeek, onWeekChange } = props;
   return (
-    <div>
+    <div className={weekPickerContainerClass}>
       <WeekPickerComponent
         onChange={onWeekChange}
         format={'[Week of] MM-DD-YYYY'}

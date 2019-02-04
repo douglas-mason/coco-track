@@ -14,9 +14,9 @@ export class LogDay extends React.Component<LogDayProps> {
 
   render() {
     return (
-      <div>
-        <ul>{this.renderLogDayItems()}</ul>
-      </div>
+      <section>
+        {this.renderLogDayItems()}
+      </section>
     );
   }
 }

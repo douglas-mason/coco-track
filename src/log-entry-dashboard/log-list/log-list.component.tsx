@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { css } from 'emotion';
 import moment from 'moment';
 import { AuthenticationContext } from '../../_shared/contexts/authentication/authentication.context';
 import { LogDay } from './log-day/log-day.container';
 import { LogEntry } from '../../_shared/interfaces/log-entry.interface';
-import { listContainerClass } from './log-list.styles';
-import { panelClass } from '../log-entry-dashboard.styles';
+import { listContainerClass, weekDayContainerClass, panelClass } from './log-list.styles';
 import { WeekPicker } from '../../_shared/components/week-picker/week-picker.component';
-import { Collapse } from 'antd';
+import { Collapse, Row, Col } from 'antd';
 
 const { Panel } = Collapse;
 const WEEK_DAYS = [
@@ -54,7 +52,7 @@ class LogListComponent extends React.Component<LogListProps, LogListState> {
   renderWeekDays = () => {
     const { logs } = this.state;
     const dayPanels = WEEK_DAYS.map(day => (
-      <Panel key={day} header={day}>
+      <Panel key={day} header={day} className={panelClass}>
         <LogDay logEntries={logs} />
       </Panel>
     ));
@@ -66,11 +64,18 @@ class LogListComponent extends React.Component<LogListProps, LogListState> {
     const { selectedWeek } = this.state;
 
     return (
-      <div className={css([panelClass, listContainerClass])}>
-        <WeekPicker selectedWeek={selectedWeek} onWeekChange={this.loadWeek} />
-        <div>Calendar Controls</div>
-        <Collapse bordered={false}>{this.renderWeekDays()}</Collapse>
-      </div>
+      <section className={listContainerClass}>
+        <Row>
+          <Col>
+            <WeekPicker selectedWeek={selectedWeek} onWeekChange={this.loadWeek} />
+          </Col>
+        </Row>
+        <Row>
+          <Col className={weekDayContainerClass}>
+            <Collapse bordered={false}>{this.renderWeekDays()}</Collapse>
+          </Col>
+        </Row>
+      </section>
     );
   }
 }
