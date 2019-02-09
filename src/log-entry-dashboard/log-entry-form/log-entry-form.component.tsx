@@ -20,9 +20,12 @@ import {
 import { withAuthenticationContext } from '../../_shared/contexts/authentication/with-authentication-context.component';
 import { LogEntry } from '../../_shared/interfaces/log-entry.interface';
 import { createLogEntry } from '../../_shared/services/log-entry.service';
-import { timeFormClass, buttonContainerClass, pointsButtonContainerClass } from './log-entry-form.styles';
-import { RadioChangeEvent } from 'antd/lib/radio';
-import { any } from 'prop-types';
+import {
+  timeFormClass,
+  buttonContainerClass,
+  pointsButtonContainerClass,
+} from './log-entry-form.styles';
+import { getStringValuesFromEnum } from '../../_shared/services/enum-utils.service';
 
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -35,6 +38,7 @@ interface LogEntryFormProps extends FormComponentProps {
 }
 
 class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
+  // tslint:disable-next-line
   hasErrors = (fieldsError: any) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   };
@@ -74,10 +78,9 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
   };
 
   renderCategoriesSelectOptions = () => {
-    let keys = Object.keys(Categories).filter(
-      (key: any) => !isNaN(Number(Categories[key]))
-    );
+    let keys = getStringValuesFromEnum(Categories);
 
+    // tslint:disable-next-line
     return keys.map((category: any) => {
       return (
         <SelectOption key={category} value={Categories[category]}>
@@ -88,10 +91,9 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
   };
 
   renderSubCategoriesSelectOptions = () => {
-    let keys = Object.keys(SubCategories).filter(
-      (key: any) => !isNaN(Number(SubCategories[key]))
-    );
+    let keys = getStringValuesFromEnum(SubCategories);
 
+    // tslint:disable-next-line
     return keys.map((subCategory: any) => {
       return (
         <SelectOption key={subCategory} value={SubCategories[subCategory]}>
@@ -149,7 +151,11 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
           </Col>
         </Row>
       );
-    } else if (getFieldValue('category') === Categories.TimeOnPoints || getFieldValue('category') === Categories.BillableTime || getFieldValue('category') === Categories.Points) {
+    } else if (
+      getFieldValue('category') === Categories.TimeOnPoints ||
+      getFieldValue('category') === Categories.BillableTime ||
+      getFieldValue('category') === Categories.Points
+    ) {
       return (
         <Row>
           <Col span={16} className={pointsButtonContainerClass}>
@@ -215,11 +221,7 @@ class LogEntryFormComponent extends React.Component<LogEntryFormProps> {
                           message: 'Please enter a hours worked',
                         },
                       ],
-                    })(
-                      <InputNumber
-                        placeholder="hours worked"
-                      />
-                    )}
+                    })(<InputNumber placeholder="hours worked" />)}
                   </FormItem>
                 </Col>
                 <Col span={12}>
