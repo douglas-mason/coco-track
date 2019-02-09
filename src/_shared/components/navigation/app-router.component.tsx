@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { LogEntryDashboard } from '../../../log-entry-dashboard/log-entry-dashboard.container';
 import { ReportingDashboard } from '../../../reporting-dashboard/reporting-dashboard.component';
 import { AsideMenu } from './aside-menu.component';
+import { Login } from '../../../authentication/login/login.component';
 
 export class AppRouter extends React.Component {
   render() {
@@ -11,6 +12,7 @@ export class AppRouter extends React.Component {
         <AsideMenu>
           <Switch>
             <Route exact path="/" component={LogEntryDashboard} />
+            <Route exact path="/login" component={Login} />
             <Route exact path="/log-entry" component={LogEntryDashboard} />
             <Route exact path="/analytics" component={ReportingDashboard} />
           </Switch>
